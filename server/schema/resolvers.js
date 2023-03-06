@@ -27,7 +27,15 @@ const resolvers = {
         addUser: async (parent, {username, email, password }) => {
             return await User.create({username, email, password});
         },
-    }
+
+        removeBook: async (parent, { userId, book}) => {
+            return User.findOneAndUpdate(
+                { _id: userId },
+                { $pull: { books: book } },
+                { new: true }
+            );
+        },
+    },
 };
 
 module.exports = resolvers;
