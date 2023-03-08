@@ -34,6 +34,20 @@ const resolvers = {
                 { $pull: { books: book } },
                 { new: true }
             );
+        }, 
+        saveBook: async (parent, {bookData}, context) => {
+            console.log(bookData)
+            if(context.user){
+
+            
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: context.user._id },
+                { $addToSet: { savedBooks: bookData } },
+                { new: true, runValidators: true }
+              );
+            return updatedUser;
+            }
+            throw new AuthenticationError("need to be logged in")
         },
         
     },
